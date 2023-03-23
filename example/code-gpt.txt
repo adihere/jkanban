@@ -1,0 +1,98 @@
+Alright, I can add code to calculate throughput of number of tasks. Here is the updated code:
+
+```javascript
+// Create a new jKanban instance
+var kanban = new jKanban({
+    // The element where the kanban board will be rendered
+    element: '#kanban',
+    // The list of boards to display
+    boards: [
+        {
+            id: 'todo',
+            title: 'To Do',
+            class: 'bg-light-primary',
+            item: [],
+            // Set WIP limit for this board
+            wipLimit: 5
+        },
+        {
+            id: 'doing',
+            title: 'Doing',
+            class: 'bg-light-warning',
+            item: [],
+            // Set WIP limit for this board
+            wipLimit: 5
+        },
+        {
+            id: 'done',
+            title: 'Done',
+            class: 'bg-light-success',
+            item: [],
+            // Set WIP limit for this board
+            wipLimit: 5
+        }
+    ],
+    // The function to call when a new item is added
+    addItemButton: true,
+    clickToAddItem: function(el, boardId) {
+        var title = prompt('Enter a task name');
+        if (title) {
+          // Check if adding an item will exceed the WIP limit for this board
+          var currentItems = kanban.getBoardElements(boardId).length;
+          var wipLimit = kanban.options.boards.find(board => board.id === boardId).wipLimit;
+          if (currentItems < wipLimit) {
+              kanban.addElement(boardId, {title});
+          } else {
+              alert('You have reached the WIP limit for this board. Please finish some tasks before adding new ones.');
+          }
+        }
+    },
+    // The function to call when an item is dragged and dropped
+    dragEl : function (el, source) {
+      el.classList.add('is-moving');
+      console.log('dragging', el);
+    },
+    dropEl : function (el, target, source, sibling) {
+      el.classList.remove('is-moving');
+      console.log('dropping', el);
+      // Check if dropping an item will exceed the WIP limit for the target board
+      var targetBoardId = target.parentNode.dataset.id;
+      var currentItems = kanban.getBoardElements(targetBoardId).length;
+      var wipLimit = kanban.options.boards.find(board => board.id === targetBoardId).wipLimit;
+      if (currentItems > wipLimit) {
+          alert('You have exceeded the WIP limit for this board. Please move some tasks to another board before dropping this one.');
+          kanban.drake.cancel(true); // Cancel the drop action and return the item to its original position
+      }
+      
+    }
+});
+
+// A variable to store the number of tasks completed per day 
+var throughput = 0;
+
+// A function to simulate random creation of tasks on a Kanban board 
+function createRandomTasks() { 
+  // An array of possible task names 
+  var tasks = ['Buy groceries', 'Clean the house', 'Write a blog post', 'Call mom', 'Pay bills', 'Watch a movie', 'Read a book', 'Go for a walk']; 
+  // A random number between 1 and 4 
+  var numTasks = Math.floor(Math.random() * 4) + 1; 
+  // Loop through the number of tasks to create 
+  for (var i = 0; i < numTasks; i++) { 
+     // Pick a random task name from the array 
+     var taskName = tasks[Math.floor(Math.random() * tasks.length)]; 
+     // Pick a random board id from the kanban instance 
+     var boardId = kanban.getBoardElements()[Math.floor(Math.random() * kanban.getBoardElements().length)].dataset.id; 
+
+     // Check if adding an item will exceed the WIP limit for this board  
+     var currentItems = kanban.getBoardElements(boardId).length;  
+     var wipLimit = kanban.options.boards.find(board => board.id === boardId).wipLimit;  
+     if (currentItems < wipLimit) {  
+         // Add the task to the board with a random color  
+         kanban.addElement(boardId, {title: taskName, class:'border border-' + ['primary','secondary','success','danger','warning','info','light','dark'][Math.floor(Math.random()*8)]});  
+     } else {  
+         console.log('Cannot
+
+Source: Conversation with Bing, 23/03/2023(1) What is Kanban Throughput? | Adobe Workfront. https://bing.com/search?q=kanban+throughput Accessed 23/03/2023.
+(2) Kanban Throughput: Get Data-Driven Team Performance Results. https://kanbanize.com/kanban-resources/kanban-analytics/throughput-histogram Accessed 23/03/2023.
+(3) What is Process Throughput? | Kanban Tool. https://kanbantool.com/kanban-guide/process-throughput Accessed 23/03/2023.
+(4) What is Kanban Throughput? | Adobe Workfront. https://business.adobe.com/blog/basics/throughput Accessed 23/03/2023.
