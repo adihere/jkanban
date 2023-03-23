@@ -63,6 +63,7 @@
     <button id="removeBoard">Remove "Done" Board</button>
     <br />
     <button id="removeElement">Remove "My Task Test"</button>
+    <button id="randomTasker">Random Task Creator"</button>
 
     <script src="../dist/jkanban.js"></script>
     <script>
@@ -222,6 +223,46 @@
       allEle.forEach(function(item, index) {
         //console.log(item);
       });
+
+      var randomTasker = document.getElementById("randomTasker");
+      randomTasker.addEventListener("click", function() {
+        createRandomTasks();
+      });
+
+// added by Adi
+   // A variable to store the number of tasks completed per day 
+    var throughput = 0;
+
+    // A function to simulate random creation of tasks on a Kanban board 
+    function createRandomTasks1() {
+    }
+
+    function createRandomTasks() { 
+      // An array of possible task names 
+      var tasks = ['Buy groceries', 'Clean the house', 'Write a blog post', 'Call mom', 'Pay bills', 'Watch a movie', 'Read a book', 'Go for a walk']; 
+      // A random number between 1 and 4 
+      var numTasks = Math.floor(Math.random() * 4) + 1; 
+      // Loop through the number of tasks to create 
+      for (var i = 0; i < numTasks; i++) { 
+          // Pick a random task name from the array 
+          var taskName = tasks[Math.floor(Math.random() * tasks.length)]; 
+          // Pick a random board id from the kanban instance 
+          var boardId = KanbanTest.getBoardElements()[Math.floor(Math.random() * KanbanTest.getBoardElements().length)].dataset.id; 
+
+          // Check if adding an item will exceed the WIP limit for this board  
+          var currentItems = KanbanTest.getBoardElements(boardId).length;  
+          var wipLimit = KanbanTest.options.boards.find(board => board.id === boardId).wipLimit;  
+          if (currentItems < wipLimit) {  
+              // Add the task to the board with a random color  
+              KanbanTest.addElement(boardId, {title: taskName, class:'border border-' + ['primary','secondary','success','danger','warning','info','light','dark'][Math.floor(Math.random()*8)]});  
+          } else {  
+              console.log('Cannot add as you exceed WIP');
+          }
+
+      }
+
+     }
+
     </script>
   </body>
 </html>

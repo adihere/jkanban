@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Title 2</title>
+    <link rel="stylesheet" href="../dist/jkanban.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Lato";
+        margin: 0;
+        padding: 0;
+      }
+
+      #myKanban {
+        overflow-x: auto;
+        padding: 20px 0;
+      }
+
+      .success {
+        background: #00b961;
+      }
+
+      .info {
+        background: #2a92bf;
+      }
+
+      .warning {
+        background: #f4ce46;
+      }
+
+      .error {
+        background: #fb7d44;
+      }
+
+      .custom-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 7px 15px;
+        margin: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }      
+    </style>
+  </head>
+  <body>
+    <div id="myKanban"></div>
+    <button id="addDefault">Add "Default" board</button>
+    <br />
+    <button id="addToDo">Add element in "To Do" Board</button>
+    <br />
+    <button id="addToDoAtPosition">Add element in "To Do" Board at position 2</button>
+    <br />
+    <button id="removeBoard">Remove "Done" Board</button>
+    <br />
+    <button id="removeElement">Remove "My Task Test"</button>
+    <button id="randomTasker">Random Task Creator"</button>
+
+    <script src="../dist/jkanban.js"></script>
+    <script>
+
+//Alright, I can add code to calculate throughput of number of tasks. Here is the updated code:
+
+
+// Create a new jKanban instance
+var kanban = new jKanban({
+    // The element where the kanban board will be rendered
+    element: '#kanban',
+    // The list of boards to display
+    boards: [
+        {
+            id: 'todo',
+            title: 'To Do',
+            class: 'bg-light-primary',
+            item: [],
+            // Set WIP limit for this board
+            wipLimit: 5
+        },
+        {
+            id: 'doing',
+            title: 'Doing',
+            class: 'bg-light-warning',
+            item: [],
+            // Set WIP limit for this board
+            wipLimit: 5
+        },
+        {
+            id: 'done',
+            title: 'Done',
+            class: 'bg-light-success',
+            item: [],
+            // Set WIP limit for this board
+            wipLimit: 5
+        }
+    ],
+    // The function to call when a new item is added
+    addItemButton: true,
+    clickToAddItem: function(el, boardId) {
+        var title = prompt('Enter a task name');
+        if (title) {
+          // Check if adding an item will exceed the WIP limit for this board
+          var currentItems = kanban.getBoardElements(boardId).length;
+          var wipLimit = kanban.options.boards.find(board => board.id === boardId).wipLimit;
+          if (currentItems < wipLimit) {
+              kanban.addElement(boardId, {title});
+          } else {
+              alert('You have reached the WIP limit for this board. Please finish some tasks before adding new ones.');
+          }
+        }
+    },
+    // The function to call when an item is dragged and dropped
+    dragEl : function (el, source) {
+      el.classList.add('is-moving');
+      console.log('dragging', el);
+    },
+    dropEl : function (el, target, source, sibling) {
+      el.classList.remove('is-moving');
+      console.log('dropping', el);
+      // Check if dropping an item will exceed the WIP limit for the target board
+      var targetBoardId = target.parentNode.dataset.id;
+      var currentItems = kanban.getBoardElements(targetBoardId).length;
+      var wipLimit = kanban.options.boards.find(board => board.id === targetBoardId).wipLimit;
+      if (currentItems > wipLimit) {
+          alert('You have exceeded the WIP limit for this board. Please move some tasks to another board before dropping this one.');
+          kanban.drake.cancel(true); // Cancel the drop action and return the item to its original position
+      }
+      
+    }
+});
+
+// A variable to store the number of tasks completed per day 
+var throughput = 0;
+
+// A function to simulate random creation of tasks on a Kanban board 
+function createRandomTasks() { 
+  // An array of possible task names 
+  var tasks = ['Buy groceries', 'Clean the house', 'Write a blog post', 'Call mom', 'Pay bills', 'Watch a movie', 'Read a book', 'Go for a walk']; 
+  // A random number between 1 and 4 
+  var numTasks = Math.floor(Math.random() * 4) + 1; 
+  // Loop through the number of tasks to create 
+  for (var i = 0; i < numTasks; i++) { 
+     // Pick a random task name from the array 
+     var taskName = tasks[Math.floor(Math.random() * tasks.length)]; 
+     // Pick a random board id from the kanban instance 
+     var boardId = kanban.getBoardElements()[Math.floor(Math.random() * kanban.getBoardElements().length)].dataset.id; 
+
+     // Check if adding an item will exceed the WIP limit for this board  
+     var currentItems = kanban.getBoardElements(boardId).length;  
+     var wipLimit = kanban.options.boards.find(board => board.id === boardId).wipLimit;  
+     if (currentItems < wipLimit) {  
+         // Add the task to the board with a random color  
+         kanban.addElement(boardId, {title: taskName, class:'border border-' + ['primary','secondary','success','danger','warning','info','light','dark'][Math.floor(Math.random()*8)]});  
+     } else {  
+         console.log('Cannot add as you exceed WIP');
+     }
+
+    }
+
+
+
+    </script>
+  </body>
+</html>
