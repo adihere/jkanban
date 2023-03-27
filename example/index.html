@@ -226,7 +226,7 @@
 
       var randomTasker = document.getElementById("randomTasker");
       randomTasker.addEventListener("click", function() {
-        createRandomTasks();
+        createRandomTasks1();
       });
 
 // added by Adi
@@ -235,6 +235,16 @@
 
     // A function to simulate random creation of tasks on a Kanban board 
     function createRandomTasks1() {
+      
+      // A random number between 1 and 9 
+      var randTaskCount = Math.floor(Math.random() * 9) + 1; 
+
+      for (var i = 0; i < randTaskCount; i++) { 
+        KanbanTest.addElement("_todo", {
+          title: "Random Test Add " + Math.random().toString()
+        });
+      }      
+
     }
 
     function createRandomTasks() { 
