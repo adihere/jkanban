@@ -66,6 +66,7 @@
     <button id="randomTasker">Random Task Creator"</button>
 
     <script src="../dist/jkanban.js"></script>
+    <script src="./simcode.js"></script>
     <script>
       var KanbanTest = new jKanban({
         element: "#myKanban",
@@ -226,12 +227,41 @@
 
       var randomTasker = document.getElementById("randomTasker");
       randomTasker.addEventListener("click", function() {
-        createRandomTasks1();
+        createRandomTasks2();
       });
 
 // added by Adi
    // A variable to store the number of tasks completed per day 
     var throughput = 0;
+    var tasks = new Array();
+    // A function to simulate random creation of tasks on a Kanban board 
+    function createRandomTasks2() {
+      
+      // A random number between 1 and 9 
+      var randTaskCount = Math.floor(Math.random() * 9) + 1; 
+
+      for (var i = 0; i < randTaskCount; i++) { 
+        KanbanTest.addElement("_todo", {
+          title: "Random Test Add " + Math.random().toString()          
+        });
+        tasks[i] = title;
+      }        
+      moveRandomTasks();      
+    }
+
+//move to 'in progress'
+    function moveRandomTasks(){
+      randTaskCount = tasks.length;
+      for (var i = 0; i < randTaskCount; i++) { 
+        
+        KanbanTest.addElement("_working", {
+          title: "Random Test Add " + Math.random().toString()
+        });
+
+        KanbanTest.removeElement(title);
+
+      }      
+    }
 
     // A function to simulate random creation of tasks on a Kanban board 
     function createRandomTasks1() {
