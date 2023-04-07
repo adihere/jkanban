@@ -53,16 +53,16 @@
     </style>
   </head>
   <body>
+   
     <div id="myKanban"></div>
     <button id="addDefault">Add "Default" board</button>
     <br />
     <button id="addToDo">Add element in "To Do" Board</button>
     <br />
-    <button id="addToDoAtPosition">Add element in "To Do" Board at position 2</button>
-    <br />
-    <button id="removeBoard">Remove "Done" Board</button>
-    <br />
-    <button id="removeElement">Remove "My Task Test"</button>
+     <!-- Create two buttons with ids start and pause -->
+    <button id="start">Start Simulation</button>
+    <br />  
+    <button id="pause">Pause Simulation</button>
     <button id="randomTasker">Random Task Creator"</button>
 
     <script src="../dist/jkanban.js"></script>
@@ -175,20 +175,28 @@
         ]
       });
 
+    // Get the buttons by their ids
+    var startButton = document.getElementById("start");
+    var pauseButton = document.getElementById("pause");
+
+    // Add a click event listener to the start button
+    startButton.addEventListener("click", function() {
+      // Call the startSimulation function from simcode.js
+      startSimulation();
+    });
+
+    // Add a click event listener to the pause button
+    pauseButton.addEventListener("click", function() {
+      // Call the pauseSimulation function from simcode.js
+      pauseSimulation();
+    });
       var toDoButton = document.getElementById("addToDo");
       toDoButton.addEventListener("click", function() {
         KanbanTest.addElement("_todo", {
           title: "Test Add"
         });
       });
-
-      var toDoButtonAtPosition = document.getElementById("addToDoAtPosition");
-      toDoButtonAtPosition.addEventListener("click", function() {
-        KanbanTest.addElement("_todo", {
-          title: "Test Add at Pos"
-        }, 1);
-      });
-
+      
       var addBoardDefault = document.getElementById("addDefault");
       addBoardDefault.addEventListener("click", function() {
         KanbanTest.addBoards([
@@ -210,16 +218,6 @@
         ]);
       });
 
-      var removeBoard = document.getElementById("removeBoard");
-      removeBoard.addEventListener("click", function() {
-        KanbanTest.removeBoard("_done");
-      });
-
-      var removeElement = document.getElementById("removeElement");
-      removeElement.addEventListener("click", function() {
-        KanbanTest.removeElement("_test_delete");
-      });
-
       var allEle = KanbanTest.getBoardElements("_todo");
       allEle.forEach(function(item, index) {
         //console.log(item);
@@ -227,81 +225,16 @@
 
       var randomTasker = document.getElementById("randomTasker");
       randomTasker.addEventListener("click", function() {
-        createRandomTasks2();
+        createRandomTasks1();
       });
 
 // added by Adi
-   // A variable to store the number of tasks completed per day 
-    var throughput = 0;
-    var tasks = new Array();
-    // A function to simulate random creation of tasks on a Kanban board 
-    function createRandomTasks2() {
-      
-      // A random number between 1 and 9 
-      var randTaskCount = Math.floor(Math.random() * 9) + 1; 
+   
 
-      for (var i = 0; i < randTaskCount; i++) { 
-        KanbanTest.addElement("_todo", {
-          title: "Random Test Add " + Math.random().toString()          
-        });
-        tasks[i] = title;
-      }        
-      moveRandomTasks();      
-    }
 
-//move to 'in progress'
-    function moveRandomTasks(){
-      randTaskCount = tasks.length;
-      for (var i = 0; i < randTaskCount; i++) { 
-        
-        KanbanTest.addElement("_working", {
-          title: "Random Test Add " + Math.random().toString()
-        });
 
-        KanbanTest.removeElement(title);
 
-      }      
-    }
 
-    // A function to simulate random creation of tasks on a Kanban board 
-    function createRandomTasks1() {
-      
-      // A random number between 1 and 9 
-      var randTaskCount = Math.floor(Math.random() * 9) + 1; 
-
-      for (var i = 0; i < randTaskCount; i++) { 
-        KanbanTest.addElement("_todo", {
-          title: "Random Test Add " + Math.random().toString()
-        });
-      }      
-
-    }
-
-    function createRandomTasks() { 
-      // An array of possible task names 
-      var tasks = ['Buy groceries', 'Clean the house', 'Write a blog post', 'Call mom', 'Pay bills', 'Watch a movie', 'Read a book', 'Go for a walk']; 
-      // A random number between 1 and 4 
-      var numTasks = Math.floor(Math.random() * 4) + 1; 
-      // Loop through the number of tasks to create 
-      for (var i = 0; i < numTasks; i++) { 
-          // Pick a random task name from the array 
-          var taskName = tasks[Math.floor(Math.random() * tasks.length)]; 
-          // Pick a random board id from the kanban instance 
-          var boardId = KanbanTest.getBoardElements()[Math.floor(Math.random() * KanbanTest.getBoardElements().length)].dataset.id; 
-
-          // Check if adding an item will exceed the WIP limit for this board  
-          var currentItems = KanbanTest.getBoardElements(boardId).length;  
-          var wipLimit = KanbanTest.options.boards.find(board => board.id === boardId).wipLimit;  
-          if (currentItems < wipLimit) {  
-              // Add the task to the board with a random color  
-              KanbanTest.addElement(boardId, {title: taskName, class:'border border-' + ['primary','secondary','success','danger','warning','info','light','dark'][Math.floor(Math.random()*8)]});  
-          } else {  
-              console.log('Cannot add as you exceed WIP');
-          }
-
-      }
-
-     }
 
     </script>
   </body>
