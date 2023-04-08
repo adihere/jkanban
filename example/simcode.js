@@ -72,20 +72,6 @@ function createRandomTasks() {
 
    }
 
-    //move to 'in progress'
-    function moveRandomTasks(){
-        taskCount = tasks.length;
-        for (var i = 0; i < taskCount; i++) { 
-          
-          KanbanTest.addElement("_working", {
-            title: "Random Test Add " + Math.random().toString()
-          });
-  
-          KanbanTest.removeElement(title);
-  
-        }      
-      }
-  
 
       // add a function to move an item from one board to another
     function moveItem(itemID, targetBoardID) {
@@ -96,11 +82,9 @@ function createRandomTasks() {
       if (item && targetBoard) { // if both elements exist
        KanbanTest.removeElement(itemID); // remove the item from the origin board
        KanbanTest.addElement(targetBoardID, {
-        id:itemID,
+        id:itemID +"2",
         title:item.innerHTML
        }); // add the item to the target board
-
-
       }
     }
 
