@@ -90,18 +90,16 @@ function createRandomTasks() {
       // add a function to move an item from one board to another
     function moveItem(itemID, targetBoardID) {
       var item = KanbanTest.findElement(itemID); // find the item element by id
-      var originBoardID = item.parentElement.parentElement.dataset.id; // get the id of the origin board
+      //var originBoardID = item.parentElement.parentElement.dataset.id; // get the id of the origin board
       var targetBoard = KanbanTest.findBoard(targetBoardID); // find the target board element by id
 
       if (item && targetBoard) { // if both elements exist
+       KanbanTest.removeElement(itemID); // remove the item from the origin board
+       KanbanTest.addElement(targetBoardID, {
+        id:itemID,
+        title:item.innerHTML
+       }); // add the item to the target board
 
-        //KanbanTest.addElement(targetBoardID, item); // add the item to the target board
-        KanbanTest.addElement(targetBoardID, {
-          id: item.itemID, // add the random ID to the element object
-          title: item.text
-        });
-
-      KanbanTest.removeElement(itemID); // remove the item from the origin board
 
       }
     }
@@ -115,7 +113,8 @@ function createRandomTasks() {
       var items = KanbanTest.getBoardElements(originBoardID); // get all the items in the board by id
       for (var i = 0; i < items.length; i++) { // loop through each item
         var itemID = items[i].dataset.eid; // get the id of the item        
-        moveItem(itemID, targetBoardID); // call the moveItem function with the item id and target board id       
+        moveItem(itemID, targetBoardID); // call the internal moveItem function with the item id and target board id       
+        //KanbanTest.moveElement(items[i],targetBoardID);
       }
     }
   }
@@ -127,7 +126,9 @@ function createRandomTasks() {
         var randTaskCount = Math.floor(randNumber * SimConfig.maxtaskinput) + 1; 
   
         for (var i = 0; i < randTaskCount; i++) { 
+          var randomID = Math.random().toString(36).substr(2, 9); // generate a random ID using Math.random and toString
           KanbanTest.addElement("_todo", {
+            id:randomID,
             title: "Random Test Add " + (randNumber+i).toString().substring(0,6)
           });
         }        
