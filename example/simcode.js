@@ -26,8 +26,8 @@ var SimConfig = {
   // Declare a function named startSimulation
     function startSimulation() {
     //some logic to start the simulation
-    
-    console.log("Starting the simulation...");
+        console.log("Starting the simulation...");
+        moveAllItems('_todo','_working');
   }
   
   // Declare a function named pauseSimulation
@@ -72,12 +72,10 @@ function createRandomTasks() {
 
    }
 
-
-
     //move to 'in progress'
     function moveRandomTasks(){
-        randTaskCount = tasks.length;
-        for (var i = 0; i < randTaskCount; i++) { 
+        taskCount = tasks.length;
+        for (var i = 0; i < taskCount; i++) { 
           
           KanbanTest.addElement("_working", {
             title: "Random Test Add " + Math.random().toString()
@@ -88,14 +86,41 @@ function createRandomTasks() {
         }      
       }
   
-      // A function to simulate random creation of tasks on a Kanban board 
+
+      // add a function to move an item from one board to another
+    function moveItem(itemID, targetBoardID) {
+      var item = KanbanTest.findElement(itemID); // find the item element by id
+      var originBoardID = item.parentElement.parentElement.dataset.id; // get the id of the origin board
+      var targetBoard = kanban.findElement(targetBoardID); // find the target board element by id
+
+      if (item && targetBoard) { // if both elements exist
+        KanbanTest.removeElement(itemID); // remove the item from the origin board
+        KanbanTest.addElement(targetBoardID, item); // add the item to the target board
+      }
+    }
+
+    // add a function to move all items from one board to another board
+  function moveAllItems(originBoardID, targetBoardID) {
+    var originBoard = KanbanTest.findBoard(originBoardID); // find the origin board element by id
+    var targetBoard = KanbanTest.findBoard(targetBoardID); // find the target board element by id
+    if (originBoard && targetBoard) { // if both elements exist
+      var items = originBoard.querySelectorAll('.kanban-item'); // get all the items in the origin board
+      for (var i = 0; i < items.length; i++) { // loop through each item
+        var itemID = items[i].dataset.eid; // get the id of the item
+        moveItem(itemID, targetBoardID); // call the moveItem function with the item id and target board id
+      }
+    }
+  }
+
+  // A function to simulate random creation of tasks on a Kanban board 
       function createRandomTasks1() {        
-        // A random number between 1 and 9 
-        var randTaskCount = Math.floor(Math.random() * 9) + 1; 
+        // A random number between 1 and configmax 
+        var randNumber = Math.random();
+        var randTaskCount = Math.floor(randNumber * SimConfig.maxtaskinput) + 1; 
   
         for (var i = 0; i < randTaskCount; i++) { 
           KanbanTest.addElement("_todo", {
-            title: "Random Test Add " + Math.random().toString()
+            title: "Random Test Add " + (randNumber+i).toString().substring(0,6)
           });
         }        
       }
