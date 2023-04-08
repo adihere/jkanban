@@ -91,11 +91,18 @@ function createRandomTasks() {
     function moveItem(itemID, targetBoardID) {
       var item = KanbanTest.findElement(itemID); // find the item element by id
       var originBoardID = item.parentElement.parentElement.dataset.id; // get the id of the origin board
-      var targetBoard = kanban.findElement(targetBoardID); // find the target board element by id
+      var targetBoard = KanbanTest.findBoard(targetBoardID); // find the target board element by id
 
       if (item && targetBoard) { // if both elements exist
-        KanbanTest.removeElement(itemID); // remove the item from the origin board
-        KanbanTest.addElement(targetBoardID, item); // add the item to the target board
+
+        //KanbanTest.addElement(targetBoardID, item); // add the item to the target board
+        KanbanTest.addElement(targetBoardID, {
+          id: item.itemID, // add the random ID to the element object
+          title: item.text
+        });
+
+      KanbanTest.removeElement(itemID); // remove the item from the origin board
+
       }
     }
 
@@ -104,10 +111,11 @@ function createRandomTasks() {
     var originBoard = KanbanTest.findBoard(originBoardID); // find the origin board element by id
     var targetBoard = KanbanTest.findBoard(targetBoardID); // find the target board element by id
     if (originBoard && targetBoard) { // if both elements exist
-      var items = originBoard.querySelectorAll('.kanban-item'); // get all the items in the origin board
+      
+      var items = KanbanTest.getBoardElements(originBoardID); // get all the items in the board by id
       for (var i = 0; i < items.length; i++) { // loop through each item
-        var itemID = items[i].dataset.eid; // get the id of the item
-        moveItem(itemID, targetBoardID); // call the moveItem function with the item id and target board id
+        var itemID = items[i].dataset.eid; // get the id of the item        
+        moveItem(itemID, targetBoardID); // call the moveItem function with the item id and target board id       
       }
     }
   }
