@@ -89,8 +89,7 @@ function createRandomTasks() {
       }
   
       // A function to simulate random creation of tasks on a Kanban board 
-      function createRandomTasks1() {
-        
+      function createRandomTasks1() {        
         // A random number between 1 and 9 
         var randTaskCount = Math.floor(Math.random() * 9) + 1; 
   

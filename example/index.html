@@ -55,14 +55,13 @@
   <body>
    
     <div id="myKanban"></div>
-    <button id="addDefault">Add "Default" board</button>
-    <br />
-    <button id="addToDo">Add element in "To Do" Board</button>
+  
     <br />
      <!-- Create two buttons with ids start and pause -->
     <button id="start">Start Simulation</button>
     <br />  
     <button id="pause">Pause Simulation</button>
+    <br />  
     <button id="randomTasker">Random Task Creator"</button>
 
     <script src="../dist/jkanban.js"></script>
@@ -116,61 +115,20 @@
         boards: [
           {
             id: "_todo",
-            title: "To Do (Can drop item only in working)",
+            title: "To Do ",
             class: "info,good",
-            dragTo: ["_working"],
-            item: [
-              {
-                id: "_test_delete",
-                title: "Try drag this (Look the console)",
-                drag: function(el, source) {
-                  console.log("START DRAG: " + el.dataset.eid);
-                },
-                dragend: function(el) {
-                  console.log("END DRAG: " + el.dataset.eid);
-                },
-                drop: function(el) {
-                  console.log("DROPPED: " + el.dataset.eid);
-                }
-              },
-              {
-                title: "Try Click This!",
-                click: function(el) {
-                  alert("click");
-                },
-                context: function(el, e){
-                  alert("right-click at (" + `${e.pageX}` + "," + `${e.pageX}` + ")")
-                },
-                class: ["peppe", "bello"]
-              }
-            ]
+            dragTo: ["_working"]
           },
           {
             id: "_working",
-            title: "Working (Try drag me too)",
-            class: "warning",
-            item: [
-              {
-                title: "Do Something!"
-              },
-              {
-                title: "Run?"
-              }
-            ]
+            title: "Working ",
+            class: "warning"  
           },
           {
             id: "_done",
-            title: "Done (Can drop item only in working)",
+            title: "Done",
             class: "success",
-            dragTo: ["_working"],
-            item: [
-              {
-                title: "All right"
-              },
-              {
-                title: "Ok!"
-              }
-            ]
+            dragTo: ["_working"]            
           }
         ]
       });
@@ -190,50 +148,11 @@
       // Call the pauseSimulation function from simcode.js
       pauseSimulation();
     });
-      var toDoButton = document.getElementById("addToDo");
-      toDoButton.addEventListener("click", function() {
-        KanbanTest.addElement("_todo", {
-          title: "Test Add"
-        });
-      });
-      
-      var addBoardDefault = document.getElementById("addDefault");
-      addBoardDefault.addEventListener("click", function() {
-        KanbanTest.addBoards([
-          {
-            id: "_default",
-            title: "Kanban Default",
-            item: [
-              {
-                title: "Default Item"
-              },
-              {
-                title: "Default Item 2"
-              },
-              {
-                title: "Default Item 3"
-              }
-            ]
-          }
-        ]);
-      });
-
-      var allEle = KanbanTest.getBoardElements("_todo");
-      allEle.forEach(function(item, index) {
-        //console.log(item);
-      });
-
-      var randomTasker = document.getElementById("randomTasker");
+    
+     var randomTasker = document.getElementById("randomTasker");
       randomTasker.addEventListener("click", function() {
         createRandomTasks1();
       });
-
-// added by Adi
-   
-
-
-
-
 
 
     </script>
