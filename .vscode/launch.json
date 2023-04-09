@@ -9,7 +9,7 @@
             "request": "launch",
             "reAttach": true,
             "name": "Launch index.html",
-            "file": "${workspaceFolder}/jkanban/example/index.html"
+            "file": "${workspaceFolder}/example/index.html"
         }  
     ]
 }

@@ -95,7 +95,7 @@ function createRandomTasks() {
     if (originBoard && targetBoard) { // if both elements exist
       
       var items = KanbanTest.getBoardElements(originBoardID); // get all the items in the board by id
-      for (var i = 0; i < items.length; i++) { // loop through each item
+      for (i = 0; i < items.length; i++) { // loop through each item
         var itemID = items[i].dataset.eid; // get the id of the item        
         moveItem(itemID, targetBoardID); // call the internal moveItem function with the item id and target board id       
         //KanbanTest.moveElement(items[i],targetBoardID);
