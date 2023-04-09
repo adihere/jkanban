@@ -95,10 +95,14 @@ function createRandomTasks() {
     if (originBoard && targetBoard) { // if both elements exist
       
       var items = KanbanTest.getBoardElements(originBoardID); // get all the items in the board by id
-      for (i = 0; i < items.length; i++) { // loop through each item
-        var itemID = items[i].dataset.eid; // get the id of the item        
-        moveItem(itemID, targetBoardID); // call the internal moveItem function with the item id and target board id       
-        //KanbanTest.moveElement(items[i],targetBoardID);
+      const numberBoardtasks = items.length;
+      for (var i = 0; i < numberBoardtasks; i++) {
+        if (items[i] === undefined) {
+            console.log('items[' + i + '] is undefined');
+        } else {
+            var itemID = items[i].dataset.eid;
+            moveItem(itemID, targetBoardID);
+        }
       }
     }
   }
