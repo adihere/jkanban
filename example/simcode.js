@@ -45,7 +45,6 @@ function addTasksinToDo(){
 }, 1);    
 }
 
-
 function createRandomTasks() { 
     // An array of possible task names 
     var tasks = ['Buy groceries', 'Clean the house', 'Write a blog post', 'Call mom', 'Pay bills', 'Watch a movie', 'Read a book', 'Go for a walk']; 
@@ -75,15 +74,16 @@ function createRandomTasks() {
 
       // add a function to move an item from one board to another
     function moveItem(itemID, targetBoardID) {
-      var item = KanbanTest.findElement(itemID); // find the item element by id
+      var elemItem = KanbanTest.findElement(itemID); // find the item element by id
       //var originBoardID = item.parentElement.parentElement.dataset.id; // get the id of the origin board
       var targetBoard = KanbanTest.findBoard(targetBoardID); // find the target board element by id
+      var itemID2 = itemID;
 
-      if (item && targetBoard) { // if both elements exist
-       KanbanTest.removeElement(itemID); // remove the item from the origin board
+      if (elemItem && targetBoard) { // if both elements exist
+       KanbanTest.removeElement(itemID2); // remove the item from the origin board
        KanbanTest.addElement(targetBoardID, {
-        id:itemID +"2",
-        title:item.innerHTML
+        id:itemID2,
+        title:elemItem.innerHTML
        }); // add the item to the target board
       }
     }
